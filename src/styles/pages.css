@@ -19,14 +19,14 @@ em {
   font-style: normal;
 }
 
-/* nav floats over the hero / fog */
+/* nav floats over the page and stays at the top of the screen while scrolling */
 .hub-nav {
-  position: absolute;
+  position: fixed;
   top: 24px;
   left: 50%;
   transform: translateX(-50%);
   width: min(940px, calc(100% - 32px));
-  z-index: 5;
+  z-index: 40; /* above content, below dialogs and toasts (50, 60) */
 }
 
 /* hero (home) */

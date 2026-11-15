@@ -94,7 +94,7 @@ function ManageSites() {
               <h1>
                 Manage your <em>sites</em>
               </h1>
-              <p>Add, edit or remove sites. To reorder them, drag cards on My sites.</p>
+              <p>Add, edit or remove sites. To reorder them, drag cards on Home.</p>
             </div>
             <F.Button arrow={false} className="mg__add" onClick={() => setDlg({ type: 'new' })}>
               <PlusIcon />

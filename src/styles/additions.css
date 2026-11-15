@@ -158,3 +158,25 @@
 .login-guest {
   margin: 0;
 }
+
+/* sections are focus targets for the nav scroll, not tab stops */
+.sec:focus {
+  outline: none;
+}
+
+/* nav labels stay on one line; the links row scrolls sideways if a narrow screen runs out of room */
+.hub-nav .fh-nav__link {
+  white-space: nowrap;
+}
+.hub-nav .fh-nav__links {
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.hub-nav .fh-nav__links::-webkit-scrollbar {
+  display: none;
+}
+
+.hub-nav .fh-nav {
+  box-shadow: var(--shadow-soft);
+}

@@ -52,7 +52,7 @@ export default function Home() {
         columns={[
           {
             title: 'Hub',
-            links: [{ label: 'My sites', href: '/' }, ...(isOwner ? [{ label: 'Add a site', href: '/manage?add=1' }] : [])]
+            links: [{ label: 'Home', href: '/' }, ...(isOwner ? [{ label: 'Add a site', href: '/manage?add=1' }] : [])]
           },
           ...(isOwner ? [{ title: 'Account', links: [{ label: 'Manage', href: '/manage' }] }] : [])
         ]}
@@ -98,7 +98,7 @@ export default function Home() {
       </ForestScene>
 
       {list.length >= 3 && (
-        <section className="sec">
+        <section className="sec" id="most-used" tabIndex={-1}>
           <F.Reveal>
             <h2>
               Most <em>used</em>
@@ -115,7 +115,7 @@ export default function Home() {
         </section>
       )}
 
-      <section className="sec">
+      <section className="sec" id="all-sites" tabIndex={-1}>
         <F.Reveal>
           <h2>
             All <em>sites</em>
