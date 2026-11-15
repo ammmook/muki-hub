@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import './forest.js';
 import './styles/pages.css';
+import './styles/additions.css';
 import { AuthProvider } from './auth.jsx';
 import InternalLinks from './components/InternalLinks.jsx';
 import RequireAuth from './components/RequireAuth.jsx';

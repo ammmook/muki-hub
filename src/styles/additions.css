@@ -1,0 +1,135 @@
+/* ---- a11y + robustness additions ---- */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* long names (Thai has no spaces) must wrap or truncate, never overflow */
+.fh-tile__title,
+.row__title {
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+}
+.hc .fh-btn {
+  max-width: calc(100% - 8px);
+}
+.hc .fh-btn > span:first-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.row__leaf[aria-disabled='true'] {
+  cursor: default;
+}
+.row__leaf:not(.is-main):hover {
+  opacity: 0.75;
+  transform: rotate(-14deg) scale(1.12);
+}
+
+/* the reorder grip stays reachable by keyboard on phones: hidden until focused */
+@media (max-width: 640px) {
+  .fh-tile__grip {
+    display: grid;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    opacity: 0;
+  }
+  .fh-tile__grip:focus-visible {
+    width: 32px;
+    height: 32px;
+    clip: auto;
+    opacity: 1;
+    right: 10px;
+    top: 0;
+  }
+}
+
+/* comfortable touch targets (44px) on touch screens */
+@media (pointer: coarse) {
+  .row__leaf,
+  .modal__close {
+    width: 44px;
+    height: 44px;
+  }
+  .row__leaf {
+    top: 6px;
+    right: 8px;
+  }
+  .fh-tile__star {
+    width: 44px;
+    height: 44px;
+  }
+  .fh-btn--sm {
+    min-height: 44px;
+  }
+}
+
+/* undo toast */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: max(16px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  max-width: calc(100% - 32px);
+  padding: 10px 12px 10px 20px;
+  border-radius: var(--radius-pill);
+  background: var(--panel);
+  color: #14251a;
+  box-shadow: var(--shadow-lift);
+  font: 500 14px/20px var(--font-sans);
+  animation: toast-in var(--dur-base) var(--ease-spring) both;
+}
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 16px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+.toast span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.toast__action {
+  flex: none;
+  border: 0;
+  border-radius: var(--radius-pill);
+  padding: 8px 16px;
+  background: #14251a;
+  color: #e4eadb;
+  font: 600 14px/20px var(--font-sans);
+  cursor: pointer;
+}
+.toast__action:focus-visible {
+  outline: 2px solid #1f4a2f;
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .toast {
+    animation: none;
+  }
+}

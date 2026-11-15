@@ -6,9 +6,16 @@ export default function Nav({ page }) {
   return (
     <div className="hub-nav">
       <F.NavBar
-        brand="Muki" brandAccent="Hub" brandHref="/"
-        links={[{ label: 'My sites', href: '/', active: page === 'home' }, { label: 'Manage', href: '/manage', active: page === 'manage' }]}
-        user={{ name: user.name }} onSignOut={signOut} signOutLabel="Sign out"
+        brand="Muki"
+        brandAccent="Hub"
+        brandHref="/"
+        links={[
+          { label: 'My sites', href: '/', active: page === 'home' },
+          { label: 'Manage', href: '/manage', active: page === 'manage' }
+        ]}
+        user={{ name: user.name }}
+        onSignOut={signOut}
+        signOutLabel="Sign out"
       />
     </div>
   );

@@ -1,16 +1,17 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { F } from '../forest.js';
 import Nav from '../components/Nav.jsx';
 import ForestScene from '../components/ForestScene.jsx';
 import Modal from '../components/Modal.jsx';
 import ProjectDialog from '../components/ProjectDialog.jsx';
-import { listProjects, addProject, updateProject, removeProject, makeMain, domainOf } from '../store.js';
+import Toast from '../components/Toast.jsx';
+import { useProjects, addProject, updateProject, removeProject, restoreProject, makeMain, domainOf } from '../store.js';
 
 const LeafIcon = () => (
   <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
     <path d="M4 20C4 10.5 10 4 20 4c0 10-6.5 16-16 16z" fill="currentColor" />
-    <path d="M4 20 14 10" stroke="var(--leaf-vein, #E4EADB)" strokeWidth="1.5" strokeLinecap="round" fill="none" />
+    <path d="M4 20 14 10" stroke="var(--leaf-vein, var(--panel))" strokeWidth="1.5" strokeLinecap="round" fill="none" />
   </svg>
 );
 const PlusIcon = () => (
@@ -29,14 +30,25 @@ function Row({ item, index, onMain, onEdit, onDelete }) {
         <p className="row__title">{item.title}</p>
         <p className="row__domain">{domainOf(item.href)}</p>
       </div>
-      <button type="button" className={'row__leaf' + (index === 0 ? ' is-main' : '')} onClick={onMain}
-        disabled={index === 0} aria-pressed={index === 0}
+      <button
+        type="button"
+        className={'row__leaf' + (index === 0 ? ' is-main' : '')}
+        onClick={index === 0 ? undefined : onMain}
+        aria-disabled={index === 0 || undefined}
+        aria-pressed={index === 0}
         aria-label={index === 0 ? item.title + ' is the main site' : 'Make ' + item.title + ' the main site'}
-        title={index === 0 ? 'Main site' : 'Make main'}><LeafIcon /></button>
+        title={index === 0 ? 'Main site' : 'Make main'}
+      >
+        <LeafIcon />
+      </button>
       <F.Chip tone={status}>{STATUS[status]}</F.Chip>
       <div className="row__actions">
-        <F.Button variant="outline" size="sm" arrow={false} onClick={onEdit}>Edit</F.Button>
-        <F.Button variant="link" size="sm" arrow={false} className="row__del" onClick={onDelete}>Delete</F.Button>
+        <F.Button variant="outline" size="sm" arrow={false} onClick={onEdit}>
+          Edit
+        </F.Button>
+        <F.Button variant="link" size="sm" arrow={false} className="row__del" onClick={onDelete}>
+          Delete
+        </F.Button>
       </div>
     </li>
   );
@@ -44,11 +56,25 @@ function Row({ item, index, onMain, onEdit, onDelete }) {
 
 export default function Manage() {
   const [params, setParams] = useSearchParams();
-  const [list, setList] = useState(listProjects);
+  const list = useProjects();
   // dialog: null | { type: 'new' } | { type: 'edit' | 'del', id }
-  const [dlg, setDlg] = useState(() => (params.get('add') ? { type: 'new' } : null));
-  const close = () => { setDlg(null); if (params.get('add')) setParams({}, { replace: true }); };
+  const [dlg, setDlg] = useState(null);
+  const [undo, setUndo] = useState(null); // { item, index } of the last removed site
+  const dismissUndo = useCallback(() => setUndo(null), []);
+  const close = () => {
+    setDlg(null);
+    if (params.get('add')) setParams({}, { replace: true });
+  };
   const target = dlg?.id ? list.find((x) => x.id === dlg.id) : null;
+
+  const showNew = dlg?.type === 'new' || !!params.get('add'); // /manage?add=1 opens it, even when already on this page
+
+  const remove = (item) => {
+    setUndo({ item, index: list.findIndex((x) => x.id === item.id) });
+    removeProject(item.id);
+    close();
+    setTimeout(() => document.querySelector('.mg__add')?.focus(), 0); // the row that had focus is gone
+  };
 
   return (
     <div className="mg">
@@ -57,32 +83,83 @@ export default function Manage() {
         <main className="mg__body">
           <header className="mg__head">
             <div>
-              <h1>Manage your <em>sites</em></h1>
+              <h1>
+                Manage your <em>sites</em>
+              </h1>
               <p>Add, edit or remove sites. To reorder them, drag cards on My sites.</p>
             </div>
-            <F.Button arrow={false} className="mg__add" onClick={() => setDlg({ type: 'new' })}><PlusIcon />Add site</F.Button>
+            <F.Button arrow={false} className="mg__add" onClick={() => setDlg({ type: 'new' })}>
+              <PlusIcon />
+              Add site
+            </F.Button>
           </header>
-          {list.length === 0
-            ? <div className="mg__empty"><p>No sites yet. Select Add site to paste your first link.</p></div>
-            : <ul className="rows">{list.map((it, i) => (
-                <Row key={it.id} item={it} index={i}
-                  onMain={() => setList(makeMain(it.id))}
+          {list.length === 0 ? (
+            <div className="mg__empty">
+              <p>No sites yet. Select Add site to paste your first link.</p>
+            </div>
+          ) : (
+            <ul className="rows">
+              {list.map((it, i) => (
+                <Row
+                  key={it.id}
+                  item={it}
+                  index={i}
+                  onMain={() => makeMain(it.id)}
                   onEdit={() => setDlg({ type: 'edit', id: it.id })}
-                  onDelete={() => setDlg({ type: 'del', id: it.id })} />
-              ))}</ul>}
+                  onDelete={() => setDlg({ type: 'del', id: it.id })}
+                />
+              ))}
+            </ul>
+          )}
         </main>
       </ForestScene>
 
-      {dlg?.type === 'new' && <ProjectDialog onClose={close} onSave={(d) => { setList(addProject(d)); close(); }} />}
-      {dlg?.type === 'edit' && target && <ProjectDialog key={target.id} item={target} onClose={close} onSave={(d) => { setList(updateProject(target.id, d)); close(); }} />}
+      {showNew && (
+        <ProjectDialog
+          onClose={close}
+          onSave={(d) => {
+            addProject(d);
+            close();
+          }}
+        />
+      )}
+      {dlg?.type === 'edit' && target && (
+        <ProjectDialog
+          key={target.id}
+          item={target}
+          onClose={close}
+          onSave={(d) => {
+            updateProject(target.id, d);
+            close();
+          }}
+        />
+      )}
       {dlg?.type === 'del' && target && (
-        <Modal title="Remove this site from the hub?" onClose={close}
+        <Modal
+          title="Remove this site from the hub?"
+          onClose={close}
           footer={[
-            <F.Button key="c" variant="link" arrow={false} onClick={close}>Keep</F.Button>,
-            <F.Button key="d" variant="dark" arrow={false} onClick={() => { setList(removeProject(target.id)); close(); }}>Remove site</F.Button>
-          ]}>
-          <p className="confirm-text">"{target.title}" will be removed from this hub. The real site at {domainOf(target.href)} stays online. This can't be undone.</p>
+            <F.Button key="c" variant="link" arrow={false} onClick={close}>
+              Keep
+            </F.Button>,
+            <F.Button key="d" variant="dark" arrow={false} onClick={() => remove(target)}>
+              Remove site
+            </F.Button>
+          ]}
+        >
+          <p className="confirm-text">{`"${target.title}" will be removed from this hub. The real site at ${domainOf(target.href)} stays online. You can undo right after.`}</p>
         </Modal>
+      )}
+      {undo && (
+        <Toast
+          message={`Removed "${undo.item.title}"`}
+          actionLabel="Undo"
+          onDismiss={dismissUndo}
+          onAction={() => {
+            restoreProject(undo.item, undo.index);
+            setUndo(null);
+          }}
+        />
       )}
     </div>
   );

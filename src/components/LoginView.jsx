@@ -15,8 +15,12 @@ export default function LoginView() {
     <ForestScene className="login-stage">
       <main className="lp">
         <div className="copy">
-          <F.Chip tone="neutral" glass dot={false}>Private hub</F.Chip>
-          <h1>Muki <em>Hub</em></h1>
+          <F.Chip tone="neutral" glass dot={false}>
+            Private hub
+          </F.Chip>
+          <h1>
+            Muki <em>Hub</em>
+          </h1>
           <p lang="th">{TAGLINE}</p>
         </div>
         <div className="stack">
@@ -29,7 +33,11 @@ export default function LoginView() {
             buttonLabel={isDemo ? 'Continue with Google (demo)' : 'Continue with Google'}
             note={isDemo ? 'Demo mode: set VITE_GOOGLE_CLIENT_ID in .env.local to use real Google sign-in.' : 'Owner account only'}
           />
-          {error && <p className="login-err" role="alert">{error}</p>}
+          {error && (
+            <p className="login-err" role="alert">
+              {error}
+            </p>
+          )}
         </div>
       </main>
     </ForestScene>
