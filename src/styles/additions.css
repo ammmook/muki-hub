@@ -133,3 +133,16 @@
     animation: none;
   }
 }
+
+/* Firebase loading / save-error note */
+.sync-note {
+  margin: 24px auto;
+  padding: 12px 16px;
+  max-width: 560px;
+  text-align: center;
+  color: var(--ink, #fff);
+}
+.sync-note[role='alert'] {
+  border: 1px solid currentColor;
+  border-radius: 12px;
+}

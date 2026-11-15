@@ -29,9 +29,9 @@ export default function LoginView() {
           <F.SignInCard
             onSignIn={signIn}
             title="Welcome back"
-            subtitle="Sign in to open every site you have built."
+            subtitle="Sign in to see every site Muki has built."
             buttonLabel={isDemo ? 'Continue with Google (demo)' : 'Continue with Google'}
-            note={isDemo ? 'Demo mode: set VITE_GOOGLE_CLIENT_ID in .env.local to use real Google sign-in.' : 'Owner account only'}
+            note={isDemo ? 'Demo mode: set the VITE_FIREBASE_* values in .env.local to use real Google sign-in.' : 'Any Google account can view. Only the owner can edit.'}
           />
           {error && (
             <p className="login-err" role="alert">

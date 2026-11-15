@@ -3,9 +3,10 @@ import ForestScene from '../components/ForestScene.jsx';
 import SortableBoard from '../components/SortableBoard.jsx';
 import Nav from '../components/Nav.jsx';
 import { TAGLINE } from '../brand.js';
-import { useProjects, saveProjects } from '../store.js';
+import { useAuth } from '../auth.jsx';
+import { useProjects, useSyncStatus, saveProjects } from '../store.js';
 
-function Empty() {
+function Empty({ isOwner }) {
   return (
     <ForestScene className="empty-stage">
       <div className="empty">
@@ -16,10 +17,16 @@ function Empty() {
         <h1>
           No sites in the <em>forest</em> yet
         </h1>
-        <p>Add your first site. It shows up as a card you can drag to reorder.</p>
-        <F.Button href="/manage?add=1" external={false}>
-          Add your first site
-        </F.Button>
+        {isOwner ? (
+          <>
+            <p>Add your first site. It shows up as a card you can drag to reorder.</p>
+            <F.Button href="/manage?add=1" external={false}>
+              Add your first site
+            </F.Button>
+          </>
+        ) : (
+          <p>Nothing has been added yet. Check back soon.</p>
+        )}
       </div>
     </ForestScene>
   );
@@ -27,6 +34,9 @@ function Empty() {
 
 export default function Home() {
   const list = useProjects();
+  const { ready, error } = useSyncStatus();
+  const { user } = useAuth();
+  const isOwner = !!user?.isOwner;
   const main = list[0];
   const count = (s) => list.filter((x) => (x.status || 'live') === s).length;
   const live = count('live'),
@@ -42,22 +52,29 @@ export default function Home() {
         columns={[
           {
             title: 'Hub',
-            links: [
-              { label: 'My sites', href: '/' },
-              { label: 'Add a site', href: '/manage?add=1' }
-            ]
+            links: [{ label: 'My sites', href: '/' }, ...(isOwner ? [{ label: 'Add a site', href: '/manage?add=1' }] : [])]
           },
-          { title: 'Account', links: [{ label: 'Manage', href: '/manage' }] }
+          ...(isOwner ? [{ title: 'Account', links: [{ label: 'Manage', href: '/manage' }] }] : [])
         ]}
       />
     </div>
   );
 
+  if (!ready)
+    return (
+      <ForestScene className="empty-stage">
+        <Nav page="home" />
+        <p className="sync-note" role={error ? 'alert' : 'status'}>
+          {error || 'Loading your sites…'}
+        </p>
+      </ForestScene>
+    );
+
   if (!main)
     return (
       <>
         <Nav page="home" />
-        <Empty />
+        <Empty isOwner={isOwner} />
         {footer}
       </>
     );
@@ -104,11 +121,17 @@ export default function Home() {
             All <em>sites</em>
           </h2>
           <p className="l">
-            <span className="hint-fine">Drag a card to reorder. The first card is your main site.</span>
-            <span className="hint-coarse">Press and hold a card, then drag to reorder. The first card is your main site.</span>
+            {isOwner ? (
+              <>
+                <span className="hint-fine">Drag a card to reorder. The first card is your main site.</span>
+                <span className="hint-coarse">Press and hold a card, then drag to reorder. The first card is your main site.</span>
+              </>
+            ) : (
+              <span>Select a card to open the site.</span>
+            )}
           </p>
         </F.Reveal>
-        <SortableBoard projects={list} onChange={saveProjects} />
+        <SortableBoard projects={list} onChange={saveProjects} readOnly={!isOwner} />
       </section>
       {footer}
     </div>

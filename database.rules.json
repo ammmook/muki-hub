@@ -1,0 +1,13 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "projects": {
+      ".read": "auth != null",
+      ".write": "auth != null && auth.token.email_verified === true && auth.token.email === 'ammmook04@gmail.com' || auth.token.email === 'ruthaichanok.37355@gmail.com'",
+      "$i": {
+        ".validate": "newData.hasChildren(['id', 'title', 'href']) && newData.child('title').isString() && newData.child('title').val().length <= 60 && newData.child('href').isString() && newData.child('href').val().length <= 200 && (newData.child('href').val().beginsWith('http://') || newData.child('href').val().beginsWith('https://'))"
+      }
+    }
+  }
+}

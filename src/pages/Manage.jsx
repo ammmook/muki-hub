@@ -1,12 +1,13 @@
 import { useCallback, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { Navigate, useSearchParams } from 'react-router-dom';
+import { useAuth } from '../auth.jsx';
 import { F } from '../forest.js';
 import Nav from '../components/Nav.jsx';
 import ForestScene from '../components/ForestScene.jsx';
 import Modal from '../components/Modal.jsx';
 import ProjectDialog from '../components/ProjectDialog.jsx';
 import Toast from '../components/Toast.jsx';
-import { useProjects, addProject, updateProject, removeProject, restoreProject, makeMain, domainOf } from '../store.js';
+import { useProjects, useSyncStatus, addProject, updateProject, removeProject, restoreProject, makeMain, domainOf } from '../store.js';
 
 const LeafIcon = () => (
   <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
@@ -55,6 +56,13 @@ function Row({ item, index, onMain, onEdit, onDelete }) {
 }
 
 export default function Manage() {
+  const { user } = useAuth();
+  // viewers never see this page; Firebase rules would reject their writes anyway
+  return user?.isOwner ? <ManageSites /> : <Navigate to="/" replace />;
+}
+
+function ManageSites() {
+  const { error } = useSyncStatus();
   const [params, setParams] = useSearchParams();
   const list = useProjects();
   // dialog: null | { type: 'new' } | { type: 'edit' | 'del', id }
@@ -93,6 +101,11 @@ export default function Manage() {
               Add site
             </F.Button>
           </header>
+          {error && (
+            <p className="sync-note" role="alert">
+              {error}
+            </p>
+          )}
           {list.length === 0 ? (
             <div className="mg__empty">
               <p>No sites yet. Select Add site to paste your first link.</p>

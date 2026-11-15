@@ -2,15 +2,15 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
 // Production-only Content-Security-Policy (dev needs inline scripts for hot reload).
-// Google sign-in and Google Fonts are the only third-party origins.
+// Firebase (sign-in popup + Realtime Database) and Google Fonts are the only third-party origins.
 const CSP = [
   "default-src 'self'",
-  "script-src 'self' https://accounts.google.com",
+  "script-src 'self' https://apis.google.com",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://accounts.google.com/gsi/style",
   'font-src https://fonts.gstatic.com',
   "img-src 'self' data: https://*.googleusercontent.com",
-  "connect-src 'self' https://accounts.google.com",
-  'frame-src https://accounts.google.com',
+  "connect-src 'self' https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com https://*.firebasedatabase.app wss://*.firebasedatabase.app",
+  'frame-src https://accounts.google.com https://*.firebaseapp.com',
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'"

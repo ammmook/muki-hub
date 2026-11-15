@@ -16,7 +16,7 @@ const HOLD_MS = 250,
   EDGE = 90,
   INSET = 0.2;
 
-export default function SortableBoard({ projects, onChange }) {
+export default function SortableBoard({ projects, onChange, readOnly = false }) {
   const [items, setItems] = useState(projects);
   const [liftId, setLiftId] = useState(null);
   const [announce, setAnnounce] = useState('');
@@ -270,7 +270,7 @@ export default function SortableBoard({ projects, onChange }) {
               slots.current[it.id] = el;
             }}
             className={'fh-slot sb-slot' + (i === 0 ? ' fh-slot--featured' : '') + (liftId === it.id ? ' is-lifted' : '')}
-            onPointerDown={(e) => onPointerDown(e, it.id)}
+            onPointerDown={readOnly ? undefined : (e) => onPointerDown(e, it.id)}
           >
             <div
               className="sb-card"
@@ -287,9 +287,9 @@ export default function SortableBoard({ projects, onChange }) {
                 tone={it.tone}
                 featured={i === 0}
                 index={i}
-                grip
+                grip={!readOnly}
                 openLabel="Open"
-                onMakeMain={() => commit(moveTo(it.id, 0, false), it.id)}
+                onMakeMain={readOnly ? undefined : () => commit(moveTo(it.id, 0, false), it.id)}
                 onGripKey={(e) => {
                   if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
                     e.preventDefault();

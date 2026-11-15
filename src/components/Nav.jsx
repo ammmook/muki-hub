@@ -11,7 +11,7 @@ export default function Nav({ page }) {
         brandHref="/"
         links={[
           { label: 'My sites', href: '/', active: page === 'home' },
-          { label: 'Manage', href: '/manage', active: page === 'manage' }
+          ...(user.isOwner ? [{ label: 'Manage', href: '/manage', active: page === 'manage' }] : [])
         ]}
         user={{ name: user.name }}
         onSignOut={signOut}
