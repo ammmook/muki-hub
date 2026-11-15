@@ -7,9 +7,12 @@
 **แหล่งรวมเว็บของมุกกี้**
 *one quiet clearing in the forest, where every site Muki has grown lives*
 
+### 🌿 [Visit the live site → muki-hub.vercel.app](https://muki-hub.vercel.app/) 🌿
+
 ![React](https://img.shields.io/badge/React-18-55793a?style=for-the-badge&logo=react&logoColor=cdee6b&labelColor=0c1a12)
 ![Vite](https://img.shields.io/badge/Vite-5-55793a?style=for-the-badge&logo=vite&logoColor=cdee6b&labelColor=0c1a12)
 ![Firebase](https://img.shields.io/badge/Firebase-Auth%20%2B%20RTDB-55793a?style=for-the-badge&logo=firebase&logoColor=cdee6b&labelColor=0c1a12)
+![Vercel](https://img.shields.io/badge/Hosted%20on-Vercel-55793a?style=for-the-badge&logo=vercel&logoColor=cdee6b&labelColor=0c1a12)
 ![Theme](https://img.shields.io/badge/theme-forest%20night-1f4a2f?style=for-the-badge&labelColor=0c1a12)
 
 </div>
@@ -21,87 +24,89 @@
    🍃        🌿        🍃    🌿        🍃
 ```
 
-## 🌱 ทำไมถึงมีเว็บนี้
+## 🌱 Why this exists
 
-มุกกี้ทำเว็บไว้หลายตัว กระจายอยู่คนละโดเมน ลิงก์จำยาก และไม่มีที่ไหนให้เห็นภาพรวมว่า
-ตอนนี้ตัวไหนใช้งานได้ ตัวไหนกำลังสร้าง ตัวไหนพักไว้
+Muki has built a lot of websites, each on its own domain, with links that are hard to remember
+and no single place that shows what is live, what is still growing, and what is resting.
 
-**Muki Hub** จึงเกิดขึ้นเป็น "ป่าเล็ก ๆ" หน้าเดียวที่รวมทุกเว็บไว้เป็นการ์ดใบไม้ เปิดได้ในคลิกเดียว
-เรียงลำดับได้ตามใจ และให้เว็บที่สำคัญที่สุดเป็น *main* อยู่ต้นแถว
+**Muki Hub** is that place: one small forest page where every site becomes a leaf-shaped card.
+Open any site in one click, drag the cards into your own order, and pin the most important one
+as the *main* site at the front.
 
-## 🍃 มีอะไรให้ใช้
+## 🍃 What you can do
 
 | | |
 |---|---|
-| 🌿 **การ์ดเว็บ** | ลากเรียงลำดับได้ (เมาส์, สัมผัสค้างแล้วลาก, หรือคีย์บอร์ด) ใบแรกคือเว็บหลัก |
-| 🍂 **สถานะ** | Live · Building · Paused บอกได้ทันทีว่าเว็บไหนอยู่ในช่วงไหน |
-| 🌳 **Most used** | วงแหวน 3 มิติของเว็บที่ใช้บ่อย เลื่อนเพื่อหมุนดู |
-| 🔐 **Google login** | เข้าด้วยบัญชี Google หรือเข้าแบบ guest เพื่อดูอย่างเดียว |
-| ✏️ **จัดการ** | เจ้าของเท่านั้นที่เพิ่ม แก้ ลบ (มี Undo) และเปลี่ยนเว็บหลักได้ |
-| 🧭 **เมนูลอยตามจอ** | แถบไฮไลต์เลื่อนไหลตามส่วนที่กำลังอ่านอยู่ |
-| ⚡ **Realtime** | แก้ในเครื่องหนึ่ง อีกเครื่องเห็นทันที ไม่ต้องรีเฟรช |
+| 🌿 **Site cards** | Drag to reorder with a mouse, press and hold on touch, or use the keyboard. The first card is the main site. |
+| 🍂 **Status** | Live · Building · Paused, so you see at a glance where each site stands. |
+| 🌳 **Most used** | A 3D ring of your favorite sites. Scroll inside it to turn through them. |
+| 🔐 **Google sign-in** | Sign in with Google, or continue as a guest to look around. |
+| ✏️ **Manage** | Only the owner can add, edit, delete (with Undo) and change the main site. |
+| 🧭 **Floating menu** | A header that stays on screen, with a highlight that glides to the section you are reading. |
+| ⚡ **Realtime** | Change something on one device and every other device updates instantly. |
 
-## 🌲 สร้างขึ้นมาด้วยอะไร
+## 🌲 What it is built with
 
-| ชั้น | เทคโนโลยี | ทำไมเลือก |
+| Layer | Technology | Why |
 |---|---|---|
-| หน้าเว็บ | **React 18** + **React Router 6** | แบ่งหน้า `/` และ `/manage` ได้ง่าย อัปเดตหน้าจอตามข้อมูลสด |
-| Build | **Vite 5** | เริ่มเร็ว รีโหลดทันที build เบา |
-| ล็อกอิน | **Firebase Authentication** (Google, Anonymous) | ไม่ต้องทำระบบรหัสผ่านเอง |
-| ฐานข้อมูล | **Firebase Realtime Database** | ซิงก์สดข้ามเครื่อง ไม่ต้องมีเซิร์ฟเวอร์ของตัวเอง |
-| ดีไซน์ | **Forest Hub design system** + CSS เขียนเอง | ธีมใบไม้ โทนกลางคืน สีมอสกับเขียวมะนาว |
-| ทดสอบ | **Vitest** + **ESLint** + **Prettier** | กันบั๊กตรงตรรกะเก็บข้อมูลและการเรียงลำดับ |
-| CI | **GitHub Actions** | รัน lint, test, build ทุกครั้งที่ push |
+| Front end | **React 18** + **React Router 6** | Simple pages (`/` and `/manage`) that re-render as the data changes. |
+| Build tool | **Vite 5** | Instant dev server, fast and small production builds. |
+| Sign-in | **Firebase Authentication** (Google, Anonymous) | No password system to build or secure. |
+| Database | **Firebase Realtime Database** | Live sync across devices, with no server of your own to run. |
+| Design | **Forest Hub design system** + hand-written CSS | A leaf theme with a night palette of moss and lime. |
+| Testing | **Vitest**, **ESLint**, **Prettier** | Guards the storage and reordering logic against regressions. |
+| CI | **GitHub Actions** | Runs lint, tests and build on every push. |
+| Hosting | **Vercel** | Deploys the static build at [muki-hub.vercel.app](https://muki-hub.vercel.app/). |
 
-## 🍁 ข้อมูลและสิทธิ์ทำงานยังไง
+## 🍁 How data and permissions work
 
 ```
-   ผู้ใช้ ──▶ Google / Guest ──▶ Firebase Auth ──▶ Realtime Database  /projects
-                                                       ▲
-                          กฎ (database.rules.json) ตัดสินที่เซิร์ฟเวอร์ Firebase
+   Visitor ──▶ Google / Guest ──▶ Firebase Auth ──▶ Realtime Database  /projects
+                                                          ▲
+                          rules (database.rules.json) are enforced on Firebase's servers
 ```
 
-| ใคร | ดูเว็บ | เพิ่ม / แก้ / ลบ / เรียง |
+| Who | View sites | Add / edit / delete / reorder |
 |---|---|---|
-| ยังไม่ login | ✖ | ✖ |
-| Guest หรือบัญชี Google ทั่วไป | ✔ | ✖ |
-| เจ้าของ (อีเมลที่กำหนด) | ✔ | ✔ |
+| Not signed in | ✖ | ✖ |
+| Guest or any Google account | ✔ | ✖ |
+| Owner (the configured email) | ✔ | ✔ |
 
-การซ่อนปุ่มในหน้าเว็บเป็นแค่เรื่องความสวยงาม **ตัวกันจริงคือ Security Rules ฝั่ง Firebase**
-ต่อให้ใครเปิด dev tools แล้วยิงคำสั่งเขียนเอง ก็ถูกปฏิเสธ
-ค่า config ของ Firebase เปิดเผยได้ ไม่ใช่ความลับ ความปลอดภัยอยู่ที่กฎ ไม่ใช่ที่ key
+Hiding the buttons in the page is only for looks. **The real protection is the Firebase Security Rules.**
+Even if someone opens the dev tools and tries to write data directly, Firebase rejects it.
+The Firebase web config is public by design and is not a secret. Safety comes from the rules, not from the key.
 
-## 🌿 เริ่มใช้
+## 🌿 Getting started
 
 ```bash
 npm install
 npm run dev        # http://localhost:5173
 ```
 
-ถ้ายังไม่ใส่ค่า `VITE_FIREBASE_*` ใน `.env.local` แอปจะรันเป็น **demo mode**
-(ล็อกอินปลอมในเครื่อง เก็บข้อมูลใน localStorage) เหมาะกับการลองเล่นโดยไม่ต้องมี Firebase
+Without `VITE_FIREBASE_*` values in `.env.local` the app runs in **demo mode**:
+a fake local sign-in, with data kept in `localStorage`. It is handy for trying things out without Firebase.
 
-| คำสั่ง | ทำอะไร |
+| Command | What it does |
 |---|---|
-| `npm run build` | build สำหรับ production ลงโฟลเดอร์ `dist/` |
-| `npm run lint` | ตรวจโค้ดด้วย ESLint |
-| `npm test` | รัน unit test |
-| `npm run format` | ตรวจรูปแบบโค้ดด้วย Prettier |
+| `npm run build` | Production build into `dist/` |
+| `npm run lint` | Check the code with ESLint |
+| `npm test` | Run the unit tests |
+| `npm run format` | Check formatting with Prettier |
 
-ขั้นตอนตั้งค่า Firebase ทั้งหมด (สร้างโปรเจกต์ เปิด Google/Anonymous ใส่ rules) อยู่ใน [CLAUDE.md](CLAUDE.md)
+The full Firebase setup (create the project, enable Google and Anonymous sign-in, publish the rules) is in [CLAUDE.md](CLAUDE.md).
 
-## 🍃 โครงสร้างโปรเจกต์
+## 🍃 Project map
 
 ```
 src/
-  main.jsx            เส้นทางหน้าเว็บ
-  firebase.js         เริ่มต้น Firebase (demo mode ถ้ายังไม่ตั้งค่า)
-  auth.jsx            Google / Guest login และแยกเจ้าของกับผู้ดู
-  store.js            รายการเว็บ + hook useProjects() ซิงก์สด
+  main.jsx            routes
+  firebase.js         Firebase setup (demo mode when not configured)
+  auth.jsx            Google / guest sign-in, owner vs viewer
+  store.js            site list + useProjects() hook with live sync
   pages/              Home, Manage
   components/         Nav, SortableBoard, ForestScene, Modal, ...
   vendor/             Forest Hub design system
-database.rules.json   กฎสิทธิ์ของ Realtime Database
+database.rules.json   Realtime Database permission rules
 ```
 
 <br />
@@ -112,6 +117,6 @@ database.rules.json   กฎสิทธิ์ของ Realtime Database
    🌿   grown with care by Muki   🌿
 ```
 
-*ใบไม้ทุกใบคือเว็บหนึ่งเว็บ*
+*Every leaf is a website.*
 
 </div>
