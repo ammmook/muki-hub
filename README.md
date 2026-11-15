@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="src/assets/bg-forest-900.webp" alt="Muki Hub forest" width="100%" />
+<img src="src/assets-src/bg-forest.png" alt="Muki Hub forest" width="100%" />
 
 # 🍃 Muki <em>Hub</em> 🍃
 
