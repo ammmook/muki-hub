@@ -69,8 +69,7 @@ function write(items) {
 }
 
 /* Firebase stores a list as {0: …, 1: …}; turn it back into an array. */
-const fromRemote = (v) =>
-  (Array.isArray(v) ? v : v ? Object.values(v) : []).filter(Boolean).map((p) => ({ ...p, tags: p.tags || [] }));
+const fromRemote = (v) => (Array.isArray(v) ? v : v ? Object.values(v) : []).filter(Boolean).map((p) => ({ ...p, tags: p.tags || [] }));
 
 let unsubscribe = null;
 export function startSync() {

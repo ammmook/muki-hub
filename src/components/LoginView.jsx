@@ -33,7 +33,9 @@ export default function LoginView() {
             buttonLabel={isDemo ? 'Continue with Google (demo)' : 'Continue with Google'}
             note={
               <>
-                {isDemo && <span className="login-demo">Demo mode: set the VITE_FIREBASE_* values in .env.local to use real Google sign-in.</span>}
+                {isDemo && (
+                  <span className="login-demo">Demo mode: set the VITE_FIREBASE_* values in .env.local to use real Google sign-in.</span>
+                )}
                 <F.Button variant="link" arrow={false} onClick={signInGuest} className="login-guest">
                   Continue as a guest
                 </F.Button>

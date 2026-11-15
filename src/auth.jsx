@@ -30,7 +30,8 @@ const ERRORS = {
   'auth/popup-blocked': 'The browser blocked the Google window. Allow pop-ups, then try again.',
   'auth/operation-not-allowed': 'This sign-in method is not enabled yet. Turn it on under Authentication > Sign-in method in Firebase.',
   'auth/network-request-failed': 'No connection. Check your internet and try again.',
-  'auth/unauthorized-domain': 'This site address is not allowed yet. Add it under Authentication > Settings > Authorized domains in Firebase.'
+  'auth/unauthorized-domain':
+    'This site address is not allowed yet. Add it under Authentication > Settings > Authorized domains in Firebase.'
 };
 
 export function AuthProvider({ children }) {
@@ -96,5 +97,7 @@ export function AuthProvider({ children }) {
     fbSignOut(auth);
   }, []);
 
-  return <Ctx.Provider value={{ user: user || null, loading: user === undefined, error, signIn, signInGuest, signOut }}>{children}</Ctx.Provider>;
+  return (
+    <Ctx.Provider value={{ user: user || null, loading: user === undefined, error, signIn, signInGuest, signOut }}>{children}</Ctx.Provider>
+  );
 }

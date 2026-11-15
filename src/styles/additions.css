@@ -180,3 +180,40 @@
 .hub-nav .fh-nav {
   box-shadow: var(--shadow-soft);
 }
+
+/* Sliding highlight behind the active nav link (element is created in Nav.jsx).
+   .fh-nav becomes its own stacking context so z-index:-1 sits above the bar's
+   background but below the link text. */
+.hub-nav .fh-nav {
+  isolation: isolate;
+}
+.hub-nav .fh-nav__links {
+  position: relative;
+}
+.hub-nav .fh-nav__link[aria-current='page'] {
+  background: transparent; /* the pill draws it instead */
+}
+.nav-pill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+}
+.nav-pill.is-ready {
+  transition:
+    transform 480ms var(--ease-out),
+    width 480ms var(--ease-out),
+    height 480ms var(--ease-out),
+    opacity 200ms;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-pill.is-ready {
+    transition: none;
+  }
+}
