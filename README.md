@@ -1,73 +1,117 @@
-# Muki Hub
+<div align="center">
 
-One private page that lists every website Muki has built and opens each one in a new tab.
-Vite + React, styled with the Forest Hub design system (night theme).
+<img src="src/assets/bg-forest-900.webp" alt="Muki Hub forest" width="100%" />
 
-## Run it
+# 🍃 Muki <em>Hub</em> 🍃
+
+**แหล่งรวมเว็บของมุกกี้**
+*one quiet clearing in the forest, where every site Muki has grown lives*
+
+![React](https://img.shields.io/badge/React-18-55793a?style=for-the-badge&logo=react&logoColor=cdee6b&labelColor=0c1a12)
+![Vite](https://img.shields.io/badge/Vite-5-55793a?style=for-the-badge&logo=vite&logoColor=cdee6b&labelColor=0c1a12)
+![Firebase](https://img.shields.io/badge/Firebase-Auth%20%2B%20RTDB-55793a?style=for-the-badge&logo=firebase&logoColor=cdee6b&labelColor=0c1a12)
+![Theme](https://img.shields.io/badge/theme-forest%20night-1f4a2f?style=for-the-badge&labelColor=0c1a12)
+
+</div>
+
+<br />
+
+```
+        🌿        🍃              🌿
+   🍃        🌿        🍃    🌿        🍃
+```
+
+## 🌱 ทำไมถึงมีเว็บนี้
+
+มุกกี้ทำเว็บไว้หลายตัว กระจายอยู่คนละโดเมน ลิงก์จำยาก และไม่มีที่ไหนให้เห็นภาพรวมว่า
+ตอนนี้ตัวไหนใช้งานได้ ตัวไหนกำลังสร้าง ตัวไหนพักไว้
+
+**Muki Hub** จึงเกิดขึ้นเป็น "ป่าเล็ก ๆ" หน้าเดียวที่รวมทุกเว็บไว้เป็นการ์ดใบไม้ เปิดได้ในคลิกเดียว
+เรียงลำดับได้ตามใจ และให้เว็บที่สำคัญที่สุดเป็น *main* อยู่ต้นแถว
+
+## 🍃 มีอะไรให้ใช้
+
+| | |
+|---|---|
+| 🌿 **การ์ดเว็บ** | ลากเรียงลำดับได้ (เมาส์, สัมผัสค้างแล้วลาก, หรือคีย์บอร์ด) ใบแรกคือเว็บหลัก |
+| 🍂 **สถานะ** | Live · Building · Paused บอกได้ทันทีว่าเว็บไหนอยู่ในช่วงไหน |
+| 🌳 **Most used** | วงแหวน 3 มิติของเว็บที่ใช้บ่อย เลื่อนเพื่อหมุนดู |
+| 🔐 **Google login** | เข้าด้วยบัญชี Google หรือเข้าแบบ guest เพื่อดูอย่างเดียว |
+| ✏️ **จัดการ** | เจ้าของเท่านั้นที่เพิ่ม แก้ ลบ (มี Undo) และเปลี่ยนเว็บหลักได้ |
+| 🧭 **เมนูลอยตามจอ** | แถบไฮไลต์เลื่อนไหลตามส่วนที่กำลังอ่านอยู่ |
+| ⚡ **Realtime** | แก้ในเครื่องหนึ่ง อีกเครื่องเห็นทันที ไม่ต้องรีเฟรช |
+
+## 🌲 สร้างขึ้นมาด้วยอะไร
+
+| ชั้น | เทคโนโลยี | ทำไมเลือก |
+|---|---|---|
+| หน้าเว็บ | **React 18** + **React Router 6** | แบ่งหน้า `/` และ `/manage` ได้ง่าย อัปเดตหน้าจอตามข้อมูลสด |
+| Build | **Vite 5** | เริ่มเร็ว รีโหลดทันที build เบา |
+| ล็อกอิน | **Firebase Authentication** (Google, Anonymous) | ไม่ต้องทำระบบรหัสผ่านเอง |
+| ฐานข้อมูล | **Firebase Realtime Database** | ซิงก์สดข้ามเครื่อง ไม่ต้องมีเซิร์ฟเวอร์ของตัวเอง |
+| ดีไซน์ | **Forest Hub design system** + CSS เขียนเอง | ธีมใบไม้ โทนกลางคืน สีมอสกับเขียวมะนาว |
+| ทดสอบ | **Vitest** + **ESLint** + **Prettier** | กันบั๊กตรงตรรกะเก็บข้อมูลและการเรียงลำดับ |
+| CI | **GitHub Actions** | รัน lint, test, build ทุกครั้งที่ push |
+
+## 🍁 ข้อมูลและสิทธิ์ทำงานยังไง
+
+```
+   ผู้ใช้ ──▶ Google / Guest ──▶ Firebase Auth ──▶ Realtime Database  /projects
+                                                       ▲
+                          กฎ (database.rules.json) ตัดสินที่เซิร์ฟเวอร์ Firebase
+```
+
+| ใคร | ดูเว็บ | เพิ่ม / แก้ / ลบ / เรียง |
+|---|---|---|
+| ยังไม่ login | ✖ | ✖ |
+| Guest หรือบัญชี Google ทั่วไป | ✔ | ✖ |
+| เจ้าของ (อีเมลที่กำหนด) | ✔ | ✔ |
+
+การซ่อนปุ่มในหน้าเว็บเป็นแค่เรื่องความสวยงาม **ตัวกันจริงคือ Security Rules ฝั่ง Firebase**
+ต่อให้ใครเปิด dev tools แล้วยิงคำสั่งเขียนเอง ก็ถูกปฏิเสธ
+ค่า config ของ Firebase เปิดเผยได้ ไม่ใช่ความลับ ความปลอดภัยอยู่ที่กฎ ไม่ใช่ที่ key
+
+## 🌿 เริ่มใช้
 
 ```bash
 npm install
 npm run dev        # http://localhost:5173
 ```
 
-| Command | What it does |
-| --- | --- |
-| `npm run build` | Production build into `dist/` (adds a Content-Security-Policy meta tag) |
-| `npm run lint` | ESLint |
-| `npm test` | Vitest unit tests (store, reorder logic) |
-| `npm run format` | Prettier check |
+ถ้ายังไม่ใส่ค่า `VITE_FIREBASE_*` ใน `.env.local` แอปจะรันเป็น **demo mode**
+(ล็อกอินปลอมในเครื่อง เก็บข้อมูลใน localStorage) เหมาะกับการลองเล่นโดยไม่ต้องมี Firebase
 
-## Google sign-in + Firebase (who can do what)
+| คำสั่ง | ทำอะไร |
+|---|---|
+| `npm run build` | build สำหรับ production ลงโฟลเดอร์ `dist/` |
+| `npm run lint` | ตรวจโค้ดด้วย ESLint |
+| `npm test` | รัน unit test |
+| `npm run format` | ตรวจรูปแบบโค้ดด้วย Prettier |
 
-| Person | See sites | Open sites | Add / edit / delete / reorder |
-| --- | --- | --- | --- |
-| Not signed in | no | no | no |
-| Guest ("Continue as a guest") or any other Google account | yes | yes | **no** |
-| Owner (your Google account) | yes | yes | **yes** |
+ขั้นตอนตั้งค่า Firebase ทั้งหมด (สร้างโปรเจกต์ เปิด Google/Anonymous ใส่ rules) อยู่ใน [CLAUDE.md](CLAUDE.md)
 
-"Who can edit" is enforced by Firebase on its servers (`database.rules.json`), not by the page.
-Hiding the Manage button is only for looks.
-
-### One-time setup
-
-1. [Firebase console](https://console.firebase.google.com) > **Add project**.
-2. **Build > Authentication > Get started > Sign-in method > Google > Enable** (pick a support email).
-2b. Same page: **Anonymous > Enable** (this is what "Continue as a guest" uses).
-3. **Authentication > Settings > Authorized domains**: add the domain you deploy to (`localhost` is already there).
-4. **Build > Realtime Database > Create database** (start in locked mode). Copy its URL.
-5. **Project settings > Your apps > Web (</>)**: register an app and copy the config into `.env.local` (see `.env.example`).
-6. Publish the rules: paste `database.rules.json` into **Realtime Database > Rules > Publish**,
-   or run `npx firebase-tools deploy --only database`.
-7. In `database.rules.json` and `VITE_OWNER_EMAILS`, use **your** Google email.
-   To add a second owner, extend the rule: `auth.token.email === 'a@x.com' || auth.token.email === 'b@x.com'`.
-8. Sign in once with the owner account and add your sites. Open the site in a second account to check it is read-only.
-
-With no `VITE_FIREBASE_*` values the app runs in **demo mode**: the Google button signs in as a local demo user and data stays in `localStorage`.
-
-The Firebase config is public by design. Safety comes from the rules, so never leave the database in "test mode".
-
-## Project map
+## 🍃 โครงสร้างโปรเจกต์
 
 ```
 src/
-  main.jsx                 routes: /  and  /manage
-  firebase.js              Firebase init (demo mode when not configured)
-  auth.jsx                 Google sign-in via Firebase Auth, owner vs viewer
-  store.js                 site list + useProjects() hook (Realtime Database, live sync)
-  lib/reorder.js           pure list helpers (tested)
-  brand.js                 name and Thai tagline
-  pages/Home.jsx           hero, 3D ring, drag-to-reorder board
-  pages/Manage.jsx         add, edit, remove (with undo), make main
-  components/
-    SortableBoard.jsx      mouse + touch + keyboard reordering
-    ForestScene.jsx        forest photo and falling leaves (canvas)
-    Modal.jsx              accessible dialog (focus trap, close button)
-  vendor/                  compiled Forest Hub design-system bundle (needs window.React)
-  assets/                  web-ready images (WebP); originals are in assets-src/
+  main.jsx            เส้นทางหน้าเว็บ
+  firebase.js         เริ่มต้น Firebase (demo mode ถ้ายังไม่ตั้งค่า)
+  auth.jsx            Google / Guest login และแยกเจ้าของกับผู้ดู
+  store.js            รายการเว็บ + hook useProjects() ซิงก์สด
+  pages/              Home, Manage
+  components/         Nav, SortableBoard, ForestScene, Modal, ...
+  vendor/             Forest Hub design system
+database.rules.json   กฎสิทธิ์ของ Realtime Database
 ```
 
-## Notes
+<br />
 
-- Interface text is English; Thai content uses `lang="th"` so the Thai fonts (Noto Sans/Serif Thai) apply.
-- Touch reordering: press and hold a card for about a quarter of a second, then drag.
-- `assets-src/` holds the original PNGs. Regenerate the WebP files if you replace them.
+<div align="center">
+
+```
+   🌿   grown with care by Muki   🌿
+```
+
+*ใบไม้ทุกใบคือเว็บหนึ่งเว็บ*
+
+</div>
