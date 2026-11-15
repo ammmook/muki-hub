@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useCallback, useEffect } from 'react';
-import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut as fbSignOut } from 'firebase/auth';
+import { GoogleAuthProvider, onAuthStateChanged, signInAnonymously, signInWithPopup, signOut as fbSignOut } from 'firebase/auth';
 import { auth, isDemo } from './firebase.js';
 import { startSync, stopSync } from './store.js';
 
@@ -28,6 +28,7 @@ const loadDemo = () => {
 
 const ERRORS = {
   'auth/popup-blocked': 'The browser blocked the Google window. Allow pop-ups, then try again.',
+  'auth/operation-not-allowed': 'This sign-in method is not enabled yet. Turn it on under Authentication > Sign-in method in Firebase.',
   'auth/network-request-failed': 'No connection. Check your internet and try again.',
   'auth/unauthorized-domain': 'This site address is not allowed yet. Add it under Authentication > Settings > Authorized domains in Firebase.'
 };
@@ -43,7 +44,8 @@ export function AuthProvider({ children }) {
       if (u) {
         setUser({
           uid: u.uid,
-          name: (u.displayName || u.email || 'Guest').split(' ')[0],
+          name: u.isAnonymous ? 'Guest' : (u.displayName || u.email || 'Guest').split(' ')[0],
+          guest: u.isAnonymous,
           email: u.email,
           picture: u.photoURL,
           isOwner: ownerOf(u.email, u.emailVerified)
@@ -56,21 +58,30 @@ export function AuthProvider({ children }) {
     });
   }, []);
 
+  const finishDemo = (u) => {
+    try {
+      localStorage.setItem(DEMO_KEY, JSON.stringify(u));
+    } catch {
+      /* ignore */
+    }
+    setUser(u);
+  };
+
   const signIn = useCallback(() => {
     setError('');
-    if (isDemo) {
-      const u = { name: 'Owner', email: 'demo@local', demo: true, isOwner: true };
-      try {
-        localStorage.setItem(DEMO_KEY, JSON.stringify(u));
-      } catch {
-        /* ignore */
-      }
-      return setUser(u);
-    }
+    if (isDemo) return finishDemo({ name: 'Owner', email: 'demo@local', demo: true, isOwner: true });
     signInWithPopup(auth, new GoogleAuthProvider()).catch((e) => {
       if (e.code === 'auth/popup-closed-by-user' || e.code === 'auth/cancelled-popup-request') return;
       setError(ERRORS[e.code] || 'Sign-in failed. Try again.');
     });
+  }, []);
+
+  /* Guests get an anonymous Firebase session: they can read, but have no email, so the
+     ".write" rule in database.rules.json always rejects them. */
+  const signInGuest = useCallback(() => {
+    setError('');
+    if (isDemo) return finishDemo({ name: 'Guest', email: 'guest@local', demo: true, guest: true, isOwner: false });
+    signInAnonymously(auth).catch((e) => setError(ERRORS[e.code] || 'Could not continue as a guest. Try again.'));
   }, []);
 
   const signOut = useCallback(() => {
@@ -85,5 +96,5 @@ export function AuthProvider({ children }) {
     fbSignOut(auth);
   }, []);
 
-  return <Ctx.Provider value={{ user: user || null, loading: user === undefined, error, signIn, signOut }}>{children}</Ctx.Provider>;
+  return <Ctx.Provider value={{ user: user || null, loading: user === undefined, error, signIn, signInGuest, signOut }}>{children}</Ctx.Provider>;
 }

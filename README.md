@@ -22,7 +22,7 @@ npm run dev        # http://localhost:5173
 | Person | See sites | Open sites | Add / edit / delete / reorder |
 | --- | --- | --- | --- |
 | Not signed in | no | no | no |
-| Any signed-in Google account | yes | yes | **no** |
+| Guest ("Continue as a guest") or any other Google account | yes | yes | **no** |
 | Owner (your Google account) | yes | yes | **yes** |
 
 "Who can edit" is enforced by Firebase on its servers (`database.rules.json`), not by the page.
@@ -32,6 +32,7 @@ Hiding the Manage button is only for looks.
 
 1. [Firebase console](https://console.firebase.google.com) > **Add project**.
 2. **Build > Authentication > Get started > Sign-in method > Google > Enable** (pick a support email).
+2b. Same page: **Anonymous > Enable** (this is what "Continue as a guest" uses).
 3. **Authentication > Settings > Authorized domains**: add the domain you deploy to (`localhost` is already there).
 4. **Build > Realtime Database > Create database** (start in locked mode). Copy its URL.
 5. **Project settings > Your apps > Web (</>)**: register an app and copy the config into `.env.local` (see `.env.example`).

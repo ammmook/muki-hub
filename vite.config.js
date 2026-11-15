@@ -25,5 +25,6 @@ const csp = {
 export default defineConfig({
   plugins: [react(), csp],
   server: { port: 5173 },
-  test: { environment: 'jsdom', include: ['src/**/*.test.{js,jsx}'] }
+  // tests always run in demo mode, even when .env.local holds real Firebase values
+  test: { environment: 'jsdom', env: { VITE_FIREBASE_API_KEY: '', VITE_FIREBASE_DATABASE_URL: '' }, include: ['src/**/*.test.{js,jsx}'] }
 });

@@ -146,3 +146,15 @@
   border: 1px solid currentColor;
   border-radius: 12px;
 }
+
+/* The guest link lives in the card's note slot, centered under the Google button */
+.fh-signin__note {
+  justify-self: center;
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  text-align: center;
+}
+.login-guest {
+  margin: 0;
+}

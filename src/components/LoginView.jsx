@@ -10,7 +10,7 @@ const Ghost = ({ cls, title, tone, status, i }) => (
 );
 
 export default function LoginView() {
-  const { signIn, error } = useAuth();
+  const { signIn, signInGuest, error } = useAuth();
   return (
     <ForestScene className="login-stage">
       <main className="lp">
@@ -31,7 +31,14 @@ export default function LoginView() {
             title="Welcome back"
             subtitle="Sign in to see every site Muki has built."
             buttonLabel={isDemo ? 'Continue with Google (demo)' : 'Continue with Google'}
-            note={isDemo ? 'Demo mode: set the VITE_FIREBASE_* values in .env.local to use real Google sign-in.' : 'Any Google account can view. Only the owner can edit.'}
+            note={
+              <>
+                {isDemo && <span className="login-demo">Demo mode: set the VITE_FIREBASE_* values in .env.local to use real Google sign-in.</span>}
+                <F.Button variant="link" arrow={false} onClick={signInGuest} className="login-guest">
+                  Continue as a guest
+                </F.Button>
+              </>
+            }
           />
           {error && (
             <p className="login-err" role="alert">
